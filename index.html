@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#3a1f86">
+<title>Ashi 👑 A Little Kingdom</title>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Caveat:wght@500;700&family=Nunito:wght@600;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#4a1d5c;--pink:#ff5fa8;--gold:#ffd36b;--cream:#fffbea;--deep:#a3185f}
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden}
+body{font-family:Nunito,sans-serif;color:#fff;background:linear-gradient(#2a1a78,#7a3cc0 58%,#e060b8);transition:background 1s}
+body.day{background:linear-gradient(#fff0f8,#ffc4e2 65%,#ffa6d4);color:var(--ink)}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.8;transition:opacity 1s;background:radial-gradient(2px 2px at 12% 18%,#fff,transparent),radial-gradient(2px 2px at 78% 12%,#fff,transparent),radial-gradient(1.5px 1.5px at 40% 8%,#fff,transparent),radial-gradient(2px 2px at 90% 36%,#fff,transparent),radial-gradient(1.5px 1.5px at 22% 40%,#fff,transparent);animation:tw 3s ease-in-out infinite alternate}
+body.day::before{opacity:0}
+@keyframes tw{to{opacity:.3}}
+canvas{position:fixed;inset:0;pointer-events:none;z-index:9}
+#pg{position:fixed;top:0;left:0;right:0;height:5px;z-index:12;background:#ffffff33}
+#pg i{display:block;height:100%;width:0;background:linear-gradient(90deg,#ffd36b,#ff5fa8);border-radius:0 5px 5px 0;transition:width .6s}
+#bk{position:fixed;z-index:12;top:calc(14px + env(safe-area-inset-top));left:12px;width:44px;height:44px;border-radius:50%;border:0;background:#ffffff40;color:inherit;font-size:26px;display:none;place-items:center;backdrop-filter:blur(6px)}
+#bk.show{display:grid}
+.s{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;gap:16px;padding:calc(62px + env(safe-area-inset-top)) 22px calc(28px + env(safe-area-inset-bottom));text-align:center;opacity:0;visibility:hidden;transform:translateY(20px);transition:.7s;overflow-y:auto;overflow-x:hidden}
+.s.on{opacity:1;visibility:visible;transform:none}
+.s>:first-child{margin-top:auto}.s>:last-child{margin-bottom:auto}
+.s>*{max-width:420px;width:100%}
+.s>svg,.s>.btn,.s>img{width:auto;max-width:100%}
+h1,h2{font-family:'Dancing Script',cursive;font-size:clamp(1.9rem,8vw,2.4rem);line-height:1.12;text-shadow:0 2px 12px #ff5fa855}
+.day h2{color:var(--deep);text-shadow:none}
+p{line-height:1.55}svg{display:block;margin:0 auto}
+.btn{border:0;font:800 1rem Nunito;color:#fff;padding:15px 28px;min-height:52px;border-radius:40px;background:linear-gradient(#ff7ab8,#ec2a86);box-shadow:0 6px 0 var(--deep),0 10px 24px #ec2a8666;cursor:pointer;transition:.2s}
+.btn:active{transform:translateY(4px);box-shadow:0 2px 0 var(--deep)}
+.hide{display:none!important}
+.glass{background:#ffffff26;border:1.5px solid #ffffff66;border-radius:22px;padding:18px;backdrop-filter:blur(8px);font-size:1rem}
+.day .glass{background:#ffffffb0;border-color:#fff}
+.chips{display:flex;gap:8px}.chips span{flex:1;background:#fff;color:var(--ink);border-radius:14px;padding:10px 6px;font-size:.78rem;font-weight:800}
+.tap{font-size:.9rem;opacity:.9;animation:pulse 1.6s infinite}
+@keyframes pulse{50%{opacity:.35}}
+@keyframes bob{50%{transform:translateY(-10px)}}
+#env{cursor:pointer;border:0;background:none;animation:bob 2.4s ease-in-out infinite;padding:0}
+.invite{background:var(--cream);color:#6b4a1f;border:3px solid var(--gold);border-radius:20px;padding:22px;font:500 1.3rem/1.4 Caveat;box-shadow:0 0 30px #ffd36b66}
+.invite small{font:800 .66rem Nunito;letter-spacing:.2em;color:#b8860b;display:block;margin-bottom:8px}
+.ring{position:relative;width:170px;height:170px;margin-top:34px}
+.ring img{width:100%;height:100%;border-radius:50%;object-fit:cover;object-position:50% 25%;border:6px solid var(--gold);box-shadow:0 0 0 5px #ffffff66,0 10px 30px #0004}
+.ring svg{position:absolute;left:50%;top:-40px;margin-left:-32px;width:64px;height:64px;color:var(--gold);filter:drop-shadow(0 3px 4px #0005)}
+.drop svg{animation:drop 1.1s cubic-bezier(.3,1.5,.5,1)}
+@keyframes drop{from{transform:translateY(-160px) rotate(-25deg);opacity:0}}
+.frame{background:linear-gradient(#ff7ab8,#d6347f);padding:14px;border-radius:22px;box-shadow:0 12px 30px #a3185f55;cursor:pointer}
+.paper{background:var(--cream);color:#2a2230;border-radius:10px;padding:18px;text-align:left;font:700 1.25rem/1.45 Caveat;min-height:260px}
+.paper p{margin-bottom:9px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.card{perspective:700px;height:120px;cursor:pointer;border:0;background:none;padding:0;color:inherit}
+.in{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d}
+.card.f .in{transform:rotateY(180deg)}
+.fa,.fb{position:absolute;inset:0;border-radius:16px;backface-visibility:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px;box-shadow:0 6px 16px #a3185f33}
+.fa{background:linear-gradient(#fff,#ffd6ea);font:700 1.15rem 'Dancing Script';color:var(--ink)}
+.fa b{font-size:1.7rem}.fa i{font:600 .62rem Nunito;opacity:.7}
+.fb{background:var(--cream);color:#3a2530;transform:rotateY(180deg);font:700 1.02rem/1.2 Caveat}
+.count{font-weight:800;font-size:.9rem}
+.s>.car{max-width:100vw;width:100vw;display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding:14px 22px 22px;scrollbar-width:none}
+.car::-webkit-scrollbar{display:none}
+.pc{flex:0 0 min(70vw,270px);scroll-snap-align:center;background:#fff;padding:9px 9px 2px;border-radius:6px;box-shadow:0 10px 22px #a3185f44;transform:rotate(var(--r));border:0;color:var(--ink);cursor:zoom-in;text-align:center}
+.pc img{width:100%;height:auto;display:block}
+.pc span{display:block;font:700 1.3rem/1.15 Caveat;padding:8px 2px 11px;color:var(--deep)}
+.foodpic{background:#fff;padding:9px 9px 0;border-radius:6px;box-shadow:0 10px 24px #a3185f44;transform:rotate(-1.5deg);border:0;cursor:zoom-in}
+.foodpic img{width:100%;display:block}.foodpic span{display:block;font:700 1.3rem Caveat;color:var(--deep);padding:8px 0 10px}
+.tags{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}.tags span{background:#fff;color:var(--ink);border-radius:99px;padding:6px 12px;font-weight:800;font-size:.82rem;box-shadow:0 3px 8px #a3185f2a}
+#gift{cursor:pointer}#lid{transition:transform .7s;transform-origin:50% 100%}.open #lid{transform:translateY(-50px) rotate(-14deg)}
+.item{display:flex;gap:12px;align-items:center;text-align:left;background:#ffffffb8;border-radius:16px;padding:12px 14px;opacity:0;transform:translateY(16px);transition:.6s}
+.item.show,.note.show{opacity:1;transform:none}
+.item b{font:700 1.2rem 'Dancing Script'}.item span{font-size:1.6rem}.item small{display:block;font-size:.82rem}
+.note{background:var(--cream);color:#3a2530;border-radius:12px;padding:14px;font:700 1.2rem/1.3 Caveat;text-align:left;opacity:0;transform:translateY(16px);transition:.6s}
+.pr{display:flex;gap:10px;align-items:center;width:100%;background:#ffffff26;border:1.5px solid #ffffff66;color:#fff;border-radius:14px;padding:13px;min-height:50px;font:800 .95rem Nunito;text-align:left;cursor:pointer;margin-bottom:8px;transition:.3s}
+.pr em{font-style:normal;background:var(--gold);color:var(--ink);border-radius:50%;width:26px;height:26px;display:grid;place-items:center;flex:none}
+.pr.ok{background:linear-gradient(#ff7ab8,#ec2a86);border-color:var(--gold)}
+.vow{background:var(--cream);color:var(--deep);border:3px solid var(--gold);border-radius:20px;padding:18px;box-shadow:0 0 30px #ffd36b88;font:700 1.45rem/1.3 Caveat;animation:rise .8s}
+.vow small{display:block;margin-top:8px;color:#8f6218;font-size:1.2rem}
+@keyframes rise{from{opacity:0;transform:translateY(20px) scale(.95)}}
+.sig{font:700 1.4rem Caveat;text-align:right}
+#lb{position:fixed;inset:0;z-index:20;background:#2a0f3ae6;display:none;place-items:center;padding:20px}#lb.on{display:grid}
+#lb img{max-width:100%;max-height:88dvh;border:6px solid #fff;border-radius:6px}
+@media(max-width:340px){.chips{flex-direction:column}.btn{padding:13px 18px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<canvas id="fx"></canvas>
+<div id="pg"><i></i></div>
+<button id="bk" aria-label="Wapas jao">‹</button>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="cr" viewBox="0 0 24 24"><path fill="currentColor" d="M2 8l5 4 5-8 5 8 5-4-2 12H4z"/><circle cx="2" cy="7" r="1.8" fill="currentColor"/><circle cx="12" cy="3" r="1.8" fill="currentColor"/><circle cx="22" cy="7" r="1.8" fill="currentColor"/><rect x="5" y="16" width="14" height="1.6" rx=".8" fill="#fff" opacity=".6"/></symbol>
+<symbol id="chibi" viewBox="0 0 120 140"><path d="M30 138l10-46h40l10 46z" fill="#ff8ccb"/><path d="M24 60q-8 42 8 54 2-24 0-46zM96 60q8 42-8 54-2-24 0-46z" fill="#4a2517"/><circle cx="60" cy="60" r="33" fill="#ffd9b8"/><path d="M27 62C22 26 48 16 60 16s38 10 33 46c-7-16-19-24-33-24S35 46 27 62z" fill="#4a2517"/><ellipse cx="46" cy="66" rx="4.5" ry="6" fill="#2a1410"/><ellipse cx="74" cy="66" rx="4.5" ry="6" fill="#2a1410"/><circle cx="47.5" cy="63.5" r="1.8" fill="#fff"/><circle cx="75.5" cy="63.5" r="1.8" fill="#fff"/><ellipse cx="37" cy="78" rx="6" ry="3.5" fill="#ff8aae" opacity=".75"/><ellipse cx="83" cy="78" rx="6" ry="3.5" fill="#ff8aae" opacity=".75"/><path d="M53 80q7 7 14 0" stroke="#c2456f" stroke-width="2.4" fill="none" stroke-linecap="round"/><path d="M36 26l4-18 10 10 10-16 10 16 10-10 4 18z" fill="#ffd36b" stroke="#e9a822" stroke-width="1.5"/></symbol></svg>
+
+<!-- 0 intro -->
+<section class="s on" id="s0">
+  <svg width="230" height="170" viewBox="0 0 230 170"><circle cx="190" cy="22" r="12" fill="#f4e9ff"/><circle cx="196" cy="18" r="11" fill="#2a1a78"/><g fill="#c9b3f5"><rect x="30" y="70" width="170" height="90" rx="3"/><rect x="18" y="50" width="34" height="110"/><rect x="178" y="50" width="34" height="110"/><rect x="92" y="40" width="46" height="120"/></g><g fill="#7a7df0"><path d="M14 52L35 8l22 44z"/><path d="M174 52l21-44 22 44z"/><path d="M88 42l27-42 27 42z"/></g><g fill="#ffd36b"><circle cx="35" cy="80" r="5"/><circle cx="195" cy="80" r="5"/><circle cx="60" cy="100" r="5"/><circle cx="170" cy="100" r="5"/><circle cx="115" cy="75" r="6"/></g><path d="M100 160v-28a15 15 0 0130 0v28z" fill="#7a4fd8"/></svg>
+  <h1>Ek Shahi Chitthi Aayi Hai 💌</h1>
+  <button id="env" aria-label="Envelope kholo"><svg width="220" height="150" viewBox="0 0 220 150"><rect x="10" y="20" width="200" height="120" rx="10" fill="#f08cf0"/><path d="M10 28l100 70 100-70" fill="#ff9ef5" stroke="#e070e0" stroke-width="2"/><circle cx="110" cy="92" r="17" fill="#ffd36b"/><path d="M110 102l-8-8a5 5 0 017-7l1 1 1-1a5 5 0 017 7z" fill="#ff5fa8"/></svg></button>
+  <p class="tap">Envelope par tap karo ✨</p>
+</section>
+
+<!-- 1 invitation -->
+<section class="s" id="s1">
+  <svg width="130" height="150" viewBox="0 0 120 140" aria-hidden="true"><use href="#chibi"/></svg>
+  <div class="invite"><small>👑 SHAHI NIMANTRAN</small>Meri priye Devi ji, aapko ek chhoti si shahi duniya mein aane ka nimantran hai, jo sirf aapke liye banayi gayi hai. Aapke aane se har cheez aur bhi jaadui ho jaati hai. 💗</div>
+  <button class="btn" data-next>Kingdom Mein Kadam Rakho ✨</button>
+</section>
+
+<!-- 2 welcome -->
+<section class="s" id="s2">
+  <div class="ring"><img src="images/n18.jpg" alt="Ashi" width="170" height="170"><svg aria-hidden="true"><use href="#cr"/></svg></div>
+  <h1>Welcome to Your Little Kingdom, Princess <span class="nm">Ashi</span> 💗</h1>
+  <p class="glass">Agar kisi ke liye poora kingdom banane ka mauka milta, to wo tumhare liye hota. Jahan tumhari smile har kone ko roshan kar de, tumhari khushi sabse upar ho, aur har chhota pal kisi kahani jaisa lage.</p>
+  <div class="chips"><span>Tumhari Smile = Sunshine ☀️</span><span>Tumhari Khushi = Meri Wish 🌟</span><span>Tum = Pure Magic ✨</span></div>
+  <button class="btn" data-next>Agla Surprise Dikhao 💗</button>
+</section>
+
+<!-- 3 letter -->
+<section class="s" id="s3">
+  <h2>Ek Chhoti Si Chitthi, Tumhare Liye 💌</h2>
+  <div class="frame" id="frame"><div class="paper" id="paper"></div></div>
+  <p class="tap" id="tapnote">Letter par tap karo, poora khul jaayega ✨</p>
+  <button class="btn hide" id="more" data-next>Abhi Aur Bhi Hai, Devi Ji… 💗</button>
+</section>
+
+<!-- 4 cards -->
+<section class="s" id="s4">
+  <h2>Pata Hai Tum Itni Special Kyun Ho? 🌸</h2>
+  <p style="font-size:.9rem">Har royal card par tap karo, ek chhota raaz chhupa hai</p>
+  <div class="grid" id="grid"></div>
+  <p class="count" id="count"></p>
+  <button class="btn hide" id="unlock" data-next>Royal Gallery Kholo 🖼️</button>
+</section>
+
+<!-- 5 gallery -->
+<section class="s" id="s5">
+  <h2>Royal Portrait Gallery 🖼️</h2>
+  <p style="font-size:.9rem">Side mein swipe karo. Photo par tap karo to bada dikhega</p>
+  <div class="car" id="car" tabindex="0" aria-label="Photos, side mein swipe karo"></div>
+  <button class="btn" data-next>Ab Shahi Bhoj Chalein 🍽️</button>
+</section>
+
+<!-- 6 bhoj -->
+<section class="s" id="s6">
+  <h2>Shahi Bhoj, Sirf Devi Ji Ke Liye 🍽️</h2>
+  <button class="foodpic" data-zoom="images/food.jpg" aria-label="Photo bada karo"><img src="images/food.jpg" alt="Shahi bhoj" width="600" height="450" loading="lazy"><span>Aaj ka royal menu 👑</span></button>
+  <div class="tags"><span>🍚 Rajma Chawal</span><span>🫓 Chole Bhature</span><span>🥟 Momos</span><span>🍮 Rasmalai</span><span>🍔 Burger</span><span>🍕 Pizza</span><span>🥛 Lassi</span></div>
+  <p class="glass">Sab kuch saja hai, bas ek shart hai: sabse pehle rasmalai Devi ji khayengi! 😄🍮</p>
+  <button class="btn" data-next>Ab Gift Kholte Hain 🎁</button>
+</section>
+
+<!-- 7 gift -->
+<section class="s" id="s7">
+  <h2>Tumhara Princess Day Gift Aa Gaya! 🎁</h2>
+  <p style="font-size:.95rem">Kholne ke liye ready ho?</p>
+  <svg id="gift" width="240" height="210" viewBox="0 0 240 210" role="button" aria-label="Gift kholo"><g><ellipse cx="40" cy="60" rx="14" ry="18" fill="#ffa0d0"/><ellipse cx="205" cy="70" rx="12" ry="16" fill="#ffd36b"/><ellipse cx="25" cy="110" rx="11" ry="14" fill="#c9a8ff"/></g>
+    <rect x="60" y="95" width="120" height="100" rx="6" fill="#ff6fb2"/><rect x="108" y="95" width="24" height="100" fill="#ffd36b"/>
+    <g id="lid"><rect x="52" y="72" width="136" height="30" rx="6" fill="#ff8ccb"/><rect x="108" y="72" width="24" height="30" fill="#ffd36b"/><path d="M120 72c-25-30-45-5-20 0zM120 72c25-30 45-5 20 0z" fill="#e9a822"/></g></svg>
+  <button class="btn" id="unwrap">Gift Kholo 💗</button>
+</section>
+
+<!-- 8 contents -->
+<section class="s" id="s8">
+  <div class="item"><span>🤗</span><div><b>Ek Virtual Hug</b><small>Sabse garam wala hug, sirf tumhare liye.</small></div></div>
+  <div class="item"><span>🌹</span><div><b>Gulabon Ka Bouquet</b><small>Har wajah ke liye ek gulab, jinse tum zindagi ko khoobsurat banati ho.</small></div></div>
+  <div class="item"><span>🛡️</span><div><b>Ek Royal Promise</b><small>Tumhare feelings ka hamesha khayal rakhne ka promise.</small></div></div>
+  <div class="note"><b style="font-family:'Dancing Script';color:var(--deep);font-size:1.3rem">Ek Chhota Sa Note 💌</b><br>Happy Princess Day! Umeed hai aaj ka din utna hi lovely ho, jitna tum aam dino ko bana deti ho. Tum is saari khushi ki haqdaar ho.</div>
+  <button class="btn" data-next>Ek Last Cheez, Devi Ji… 💗</button>
+</section>
+
+<!-- 9 promise -->
+<section class="s" id="s9">
+  <svg width="120" height="140" viewBox="0 0 120 140" aria-hidden="true"><use href="#chibi"/></svg>
+  <h2 style="color:#fff">Mera Royal Vaada 👑</h2>
+  <p class="glass">Har din perfect hone ka vaada nahi, par har din tumhari thodi aur achhi care karne ki koshish ka vaada zaroor hai. Taj ho ya na ho, tum already ek princess ho.</p>
+  <div style="width:100%">
+    <button class="pr"><em>1</em>Tumhare Sapno Ke Liye Taaliyaan 👏</button>
+    <button class="pr"><em>2</em>Tumhare Feelings Ke Liye Izzat 🤍</button>
+    <button class="pr"><em>3</em>Asli Tum Ka Jashn 🎉</button>
+  </div>
+  <div class="vow hide" id="vow"><span id="v1"></span><small id="v2"></small></div>
+  <button class="btn hide" id="final" data-next>Final Surprise Kholo 💗</button>
+</section>
+
+<!-- 10 final -->
+<section class="s" id="s10">
+  <div class="ring" id="fr"><img src="images/n09.jpg" alt="Ashi" width="170" height="170"><svg aria-hidden="true"><use href="#cr"/></svg></div>
+  <h1>Happy Princess Day, Devi Ji! 👑</h1>
+  <p class="glass">Royal Hug Delivered! 🤗<br>Tumhare hisse ki saari khushi is kingdom mein hai. Yunhi muskuraati raho, aur hamesha apni tarah rehna.</p>
+  <p class="sig" id="sig">Bahut saare pyaar ke saath 💗</p>
+  <button class="btn" id="back" style="background:#ffffff26;box-shadow:none;border:1.5px solid #fff8">Kingdom Mein Wapas Chalo 💗</button>
+</section>
+
+<div id="lb" role="dialog" aria-label="Photo"><img alt=""></div>
+
+<script>
+// ---------- yahan badlo (ya URL mein ?name=Ashi&from=Aman) ----------
+const q=new URLSearchParams(location.search);
+const NAME=q.get('name')||'Ashi', FROM=q.get('from')||''; // naam optional: sirf ?from=Naam dene par dikhega
+const VOW="Ye apka dost hamesha apke sath khada hai chinta mat karna kabhi bhi 😊", VOW2="Kabhi apne is dost ka sath mat chhodna 🤍";
+const LETTER=[
+ "Meri priye Devi ji "+NAME+",",
+ "Asli mahal ya sone ka taj to nahi hai mere paas. Par sachchi care hai, muskurane ke dher saare bahaane hain, aur ek dost hai jo hamesha tumhari baat dhyaan se sunne ko ready hai.",
+ "Tumhe mushkil dino mein pyaar se samjhane wale log milein, aam dino mein dher saari khushi milein, aur wo apnapan milein jisme kabhi kisi aur jaisa na banna pade.",
+ "Aaj Princess Day hai, par sach kahun to tumhe har din special feel hona chahiye. 💗"];
+const CARDS=[["☀️","Tumhari Smile","Ek aam din ko bhi khoobsurat bana deti hai."],["💗","Tumhara Dil","Tumhari kindness tumhari sabse sundar baat hai."],["✨","Tumhari Aankhein","Chhote se pal ko bhi yaadgaar bana deti hain."],["🌸","Tumhari Personality","Warm, real, aur bilkul copy nahi ho sakti."],["💪","Tumhari Strength","Mushkil din mein bhi tum chalti rehti ho."],["🎀","Chhoti Chhoti Aadatein","Wahi to hain jo tumhe tum banati hain."]];
+const PICS=[["n11","Ye wali smile 💗",-2],["n08","Golden hour tumhari fan hai ✨",2],["n13","Funny face, expert level 😜",-2],["n10","Dreamy mode on 🌸",2],["n01","Laal rang, full stunner ❤️",-2],["o01","Green aur gold ka jaadu 💚",2],["o02","Chhoti Princess, badi smile 🧸",-2]];
+// ------------------------------------------------------------------
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+document.title="Ashi 👑 A Little Kingdom";
+$$('.nm').forEach(e=>e.textContent=NAME);if(FROM)$('#sig').innerHTML='Bahut saare pyaar ke saath,<br>'+FROM.replace(/[<>&]/g,'')+' 💗';
+$('#v1').textContent=VOW;$('#v2').textContent=VOW2;
+const S=$$('.s'),DAY=[3,4,5,6,7,8],calm=matchMedia('(prefers-reduced-motion:reduce)').matches;let cur=0;
+function go(n){S[cur].classList.remove('on');cur=n;S[n].classList.add('on');S[n].scrollTop=0;
+ document.body.classList.toggle('day',DAY.includes(n));
+ $('#pg i').style.width=(n/(S.length-1)*100)+'%';$('#bk').classList.toggle('show',n>0);
+ if(n==3)typeLetter();if(n==8)reveal8();
+ if(n==10){burst(170);const r=$('#fr');r.classList.remove('drop');void r.offsetWidth;r.classList.add('drop')}}
+$$('[data-next]').forEach(b=>b.onclick=()=>go(cur+1));
+$('#env').onclick=()=>{burst(50);go(1)};
+$('#back').onclick=()=>go(0);$('#bk').onclick=()=>go(cur-1);
+
+// letter (tap = poora dikhao)
+let typed=false,timer;
+function typeLetter(){if(typed)return;typed=true;const el=$('#paper');el.innerHTML='';
+ const ps=LETTER.map(t=>{const p=document.createElement('p');el.appendChild(p);return p});let i=0,j=0;
+ const done=()=>{clearInterval(timer);$('#more').classList.remove('hide');$('#tapnote').classList.add('hide')};
+ timer=setInterval(()=>{if(i>=LETTER.length)return done();ps[i].textContent=LETTER[i].slice(0,++j);if(j>=LETTER[i].length){i++;j=0}},22);
+ $('#frame').onclick=()=>{ps.forEach((p,k)=>p.textContent=LETTER[k]);done()}}
+
+// cards
+let seen=0;const upd=()=>$('#count').textContent=seen+' / '+CARDS.length+' royal raaz khule';upd();
+CARDS.forEach(([e,t,m])=>{const d=document.createElement('button');d.className='card';d.setAttribute('aria-label',t);
+ d.innerHTML=`<div class="in"><div class="fa"><b>${e}</b>${t}<i>Tap karo ✨</i></div><div class="fb">${m}</div></div>`;
+ d.onclick=()=>{if(d.classList.contains('f'))return;d.classList.add('f');seen++;upd();if(seen==CARDS.length){$('#unlock').classList.remove('hide');burst(60)}};
+ $('#grid').appendChild(d)});
+
+// gallery + zoom
+PICS.forEach(([k,c,r])=>{const b=document.createElement('button');b.className='pc';b.style.setProperty('--r',r+'deg');b.dataset.zoom=`images/${k}.jpg`;b.setAttribute('aria-label',c);
+ b.innerHTML=`<img src="images/${k}.jpg" alt="${c}" loading="lazy" decoding="async"><span>${c}</span>`;$('#car').appendChild(b)});
+document.addEventListener('click',e=>{const z=e.target.closest('[data-zoom]');if(z){$('#lb img').src=z.dataset.zoom;$('#lb').classList.add('on')}else if(e.target.closest('#lb'))$('#lb').classList.remove('on')});
+addEventListener('keydown',e=>{if(e.key==='Escape')$('#lb').classList.remove('on')});
+
+// gift
+$('#unwrap').onclick=$('#gift').onclick=()=>{$('#s7').classList.add('open');burst(120);setTimeout(()=>{if(cur==7)go(8)},1300)};
+function reveal8(){$$('#s8 .item,#s8 .note').forEach((e,i)=>setTimeout(()=>e.classList.add('show'),400+i*600))}
+
+// promise
+let ok=0;$$('.pr').forEach(b=>b.onclick=()=>{if(b.classList.contains('ok'))return;b.classList.add('ok');b.querySelector('em').textContent='✓';
+ if(++ok==3){$('#vow').classList.remove('hide');$('#final').classList.remove('hide');burst(60);$('#s9').scrollTo({top:9999,behavior:'smooth'})}});
+
+// sparkles + hearts
+const cv=$('#fx'),cx=cv.getContext('2d');let P=[];
+function fit(){cv.width=innerWidth;cv.height=innerHeight}fit();addEventListener('resize',fit);
+const COL=['#ff5fa8','#ffd36b','#c9a8ff','#fff','#7fd7ff'];
+function burst(n){if(calm)n=Math.min(n,12);for(let i=0;i<n;i++)P.push({x:innerWidth/2,y:innerHeight/2,vx:(Math.random()-.5)*14,vy:Math.random()*-12-2,r:Math.random()*4+2,c:COL[i%5],l:90+Math.random()*50,h:i%4==0})}
+(function loop(){cx.clearRect(0,0,cv.width,cv.height);
+ if(!calm&&Math.random()<.1)P.push({x:Math.random()*cv.width,y:-6,vx:0,vy:1+Math.random(),r:Math.random()*2+1.5,c:'#ffffffaa',l:300});
+ if(!calm&&Math.random()<.03)P.push({x:Math.random()*cv.width,y:cv.height+10,vx:0,vy:-1.2-Math.random(),r:Math.random()*3+3,c:'#ff8cc6aa',l:300,h:1,up:1});
+ P=P.filter(p=>p.l-->0&&p.y<cv.height+14&&p.y>-20);
+ P.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(!p.up)p.vy+=p.l>250?0:.25;p.vx*=.99;cx.globalAlpha=Math.min(1,p.l/30);cx.fillStyle=p.c;
+  if(p.h){cx.font=p.r*4+'px serif';cx.fillText('♥',p.x,p.y)}else{cx.beginPath();cx.arc(p.x,p.y,p.r,0,7);cx.fill()}});
+ requestAnimationFrame(loop)})();
+</script>
+</body>
+</html>
